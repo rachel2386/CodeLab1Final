@@ -10,6 +10,7 @@ public class CharacterType : MonoBehaviour
 
    private void Start()
    {
+      print("assigned color");
       ImgColor = GetComponent<SpriteRenderer>().color;
    }
 }

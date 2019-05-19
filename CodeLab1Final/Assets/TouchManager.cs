@@ -1,26 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class TouchManager : MonoBehaviour
 {
     private Camera _camera;
 
-   public static bool HoldingAgent = false;
-    //match 3 game
-    //chara move to a random spot on top of screen --check
-    //player touch and drag to move charas
-    //if 3 charac are with the same type, 
-    
-    
-    
+   public static bool HoldingAgent = false; //is player holding sth already?
+
+   
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.touchCount > 0)
@@ -47,10 +39,7 @@ public class GameManager : MonoBehaviour
                print("collider detected");
                hitInfo.collider.gameObject.GetComponent<AgentBehavior>().autoControl = false;
                 HoldingAgent = true;
-//                Vector3 touchPos = _camera.ScreenToWorldPoint(Input.GetTouch(0).position);
-//                touchPos.z = 0;
-//                hitInfo.transform.position = touchPos;
-                
+          
             }
            
 
