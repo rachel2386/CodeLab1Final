@@ -13,68 +13,90 @@ using Random = UnityEngine.Random;
 
 public class AgentBehavior : MonoBehaviour
 {
+    private float _activateTimer = 3f; // not matchable until this amount of time has passed. (To prevent auto match on spawn)
+    
+    //movement stuff
     private Rigidbody2D myRB;
     private Vector2 _destination;
     public float moveSpeed = 20;
     [HideInInspector] public bool autoControl = true;
+    private GameManager _gameManager;
+    
+    //camera reference
     private Camera _camera;
-    private Vector3 touchPos;
     private float camHeight;
     private float camWidth;
+    
+    //touchPos for manual control
+    private Vector3 touchPos;
+    
+    //match detection (sphere overlap) & matched list
     private Collider2D[] stuffInSphere;
     private List<GameObject> _charWithSameType = new List<GameObject>();
-    private Color myColor;
+    private int myType;
 
-    void Start()
+    private void Start()
     {
         _camera = Camera.main;
-        myRB = GetComponent<Rigidbody2D>();
         camHeight = _camera.orthographicSize * 2;
         camWidth = camHeight/2 * _camera.aspect;
         
-        _destination = new Vector2(Random.Range(-camWidth + transform.localScale.x, camWidth -transform.localScale.x), camHeight - transform.localScale.y);
+        
+        myRB = GetComponent<Rigidbody2D>();
+       _destination = new Vector2(Random.Range(-camWidth + transform.localScale.x, camWidth -transform.localScale.x), camHeight - transform.localScale.y);
         moveSpeed *= Random.Range(0.6f, 1f);
 
-        myColor = GetComponent<CharacterType>().ImgColor;
-       // _charWithSameType.Add(gameObject);
+        myType = GetComponent<CharacterType>().typeIndex;
+
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+  private void Update()
     {
 //      Debug.DrawLine(Vector3.right * -camWidth,Vector3.right *  camWidth,Color.yellow);
 //      Debug.DrawLine(Vector3.up * -camHeight/2,Vector3.up *  camHeight/2,Color.magenta);
-      
-        if  (Input.touchCount == 0)
+
+        if (GameManager.gameState != 0) return;
+        if (Input.touchCount == 0)
         {
             TouchManager.HoldingAgent = false;
             autoControl = true;
         }
-       
-        
+
+
         if (autoControl)
         {
             if (Vector2.Distance((Vector2) transform.position, _destination) >= 0.5f)
             {
                 MoveTowardsDest();
-                DetectMatch();
+                if (MatchableTimer())
+                {
+                    DetectMatch();
+                }
             }
-
-            
-           else
-          RecycleToPool(gameObject);
-           
+            else
+                RecycleToPool(gameObject);
         }
         else
         {
-           FollowTouch();
+            FollowTouch();
         }
 
     }
 
-    
+   private bool MatchableTimer()
+    {
+        bool matchable = false;
+        if (_activateTimer > 0)
+            _activateTimer -= Time.deltaTime;
+        else
+            matchable = true;
+        
+        return matchable;
+    }
 
-    void MoveTowardsDest()
+    private void MoveTowardsDest()
     {
         myRB.position = Vector2.MoveTowards(myRB.position, _destination, Mathf.Sin(Time.deltaTime)* moveSpeed);
         if (myRB.position.x >= camWidth || myRB.position.x < -camWidth)
@@ -105,6 +127,7 @@ public class AgentBehavior : MonoBehaviour
     private void RecycleToPool(GameObject objToRecycle)
     {
         CharacterSpawner.CharacterPool.Add(objToRecycle);
+        _gameManager.damagePlayer();
         gameObject.SetActive(false);
     }
     
@@ -119,10 +142,11 @@ public class AgentBehavior : MonoBehaviour
         foreach (Collider2D col in stuffInSphere)
         {
             
-            if (col.gameObject.GetComponent<CharacterType>().ImgColor == myColor)
+            if (col.gameObject.GetComponent<CharacterType>().typeIndex == myType)
             {
-                if (!_charWithSameType.Contains(col.gameObject))
+               if (!_charWithSameType.Contains(col.gameObject))
                 {
+                    
                     _charWithSameType.Add(col.gameObject);
                 }
            }
@@ -130,19 +154,19 @@ public class AgentBehavior : MonoBehaviour
        
         if (_charWithSameType.Count > 0)
         {
-            StartCoroutine(ResetMatchList());
+           StartCoroutine(ResetMatchList());
         }
 
         if (_charWithSameType.Count < 3) return;
         foreach (GameObject matchedObj in _charWithSameType)
         {
-            RecycleToPool(matchedObj);
+           Destroy(matchedObj);
             print("Matched!");
 
   
         }
             
-        RecycleToPool(gameObject);
+        Destroy(gameObject);
         _charWithSameType.Clear();
 
     }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4430115043010917596}
   m_Layer: 0
   m_Name: Red
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4292d4bebaa9f45ac5f5e8ca341639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 1
   autoControl: 1
 --- !u!114 &1102677352328202046
 MonoBehaviour:
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35450df24c5aa94f924dd5a19d8c14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImgColor: {r: 0, g: 0, b: 0, a: 0}
+  typeIndex: 0
 --- !u!58 &4430115043010917596
 CircleCollider2D:
   m_ObjectHideFlags: 0

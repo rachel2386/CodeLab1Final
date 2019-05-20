@@ -36,8 +36,7 @@ public class TouchManager : MonoBehaviour
 
             if(hitInfo.collider != null)
             {
-               print("collider detected");
-               hitInfo.collider.gameObject.GetComponent<AgentBehavior>().autoControl = false;
+              hitInfo.collider.gameObject.GetComponent<AgentBehavior>().autoControl = false;
                 HoldingAgent = true;
           
             }
