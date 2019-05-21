@@ -116,6 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4292d4bebaa9f45ac5f5e8ca341639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< .merge_file_a30020
+=======
+  moveSpeed: 1
+>>>>>>> .merge_file_a19704
   autoControl: 1
 --- !u!114 &1102677352328202046
 MonoBehaviour:
@@ -130,11 +134,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeIndex: 0
+<<<<<<< .merge_file_a30020
   Type1Sprite: {fileID: 21300000, guid: 03e24e0587467404cb3b742f8fa0a660, type: 3}
   Type2Sprite: {fileID: 21300000, guid: edd7ab22f7504944b840c759bc05c5f8, type: 3}
   Type3Sprite: {fileID: 21300000, guid: 58bbb3591a6dde246bc5a07122577c12, type: 3}
   Type4Sprite: {fileID: 21300000, guid: 028f8107c9245b84b9fd926c57447e31, type: 3}
 --- !u!58 &9038539907717539411
+=======
+--- !u!58 &4430115043010917596
+>>>>>>> .merge_file_a19704
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
