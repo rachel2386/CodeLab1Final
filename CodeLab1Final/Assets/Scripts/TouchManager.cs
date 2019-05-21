@@ -15,7 +15,7 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Moved)
         {
             
           if(!HoldingAgent)
@@ -36,8 +36,7 @@ public class TouchManager : MonoBehaviour
 
             if(hitInfo.collider != null)
             {
-               print("collider detected");
-               hitInfo.collider.gameObject.GetComponent<AgentBehavior>().autoControl = false;
+              hitInfo.collider.gameObject.GetComponent<AgentBehavior>().autoControl = false;
                 HoldingAgent = true;
           
             }
